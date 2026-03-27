@@ -51,7 +51,7 @@ Faydalı workflow'ları çağıran slash command'lar:
 
 ```bash
 # 1. Fork ve clone
-gh repo fork affaan-m/everything-claude-code --clone
+gh repo fork maurayonori/everything-claude-code --clone
 cd everything-claude-code
 
 # 2. Branch oluştur
@@ -453,7 +453,7 @@ Bunu nasıl test ettiniz.
 
 ## Sorularınız mı var?
 
-- **Issue'lar:** [github.com/affaan-m/everything-claude-code/issues](https://github.com/affaan-m/everything-claude-code/issues)
+- **Issue'lar:** [github.com/maurayonori/everything-claude-code/issues](https://github.com/maurayonori/everything-claude-code/issues)
 - **X/Twitter:** [@affaanmustafa](https://x.com/affaanmustafa)
 
 ---

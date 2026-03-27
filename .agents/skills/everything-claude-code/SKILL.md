@@ -5,7 +5,7 @@ description: Development conventions and patterns for everything-claude-code. Ja
 
 # Everything Claude Code Conventions
 
-> Generated from [affaan-m/everything-claude-code](https://github.com/affaan-m/everything-claude-code) on 2026-03-20
+> Generated from [maurayonori/everything-claude-code](https://github.com/maurayonori/everything-claude-code) on 2026-03-20
 
 ## Overview
 

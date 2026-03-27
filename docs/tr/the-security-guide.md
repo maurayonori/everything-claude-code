@@ -451,5 +451,5 @@ Kurulumunuzu tarayın: [github.com/affaan-m/agentshield](https://github.com/affa
 > [Claude Code'un Her Şeyine Dair Uzun Kılavuz](https://x.com/affaanmustafa/status/2014040193557471352)
 
 gidip yapın ve ayrıca bu repo'ları kaydedin:
-- [github.com/affaan-m/everything-claude-code](https://github.com/affaan-m/everything-claude-code)
+- [github.com/maurayonori/everything-claude-code](https://github.com/maurayonori/everything-claude-code)
 - [github.com/affaan-m/agentshield](https://github.com/affaan-m/agentshield)

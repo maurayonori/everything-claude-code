@@ -2,9 +2,9 @@
 
 # Everything Claude Code
 
-[![Stars](https://img.shields.io/github/stars/affaan-m/everything-claude-code?style=flat)](https://github.com/affaan-m/everything-claude-code/stargazers)
-[![Forks](https://img.shields.io/github/forks/affaan-m/everything-claude-code?style=flat)](https://github.com/affaan-m/everything-claude-code/network/members)
-[![Contributors](https://img.shields.io/github/contributors/affaan-m/everything-claude-code?style=flat)](https://github.com/affaan-m/everything-claude-code/graphs/contributors)
+[![Stars](https://img.shields.io/github/stars/maurayonori/everything-claude-code?style=flat)](https://github.com/maurayonori/everything-claude-code/stargazers)
+[![Forks](https://img.shields.io/github/forks/maurayonori/everything-claude-code?style=flat)](https://github.com/maurayonori/everything-claude-code/network/members)
+[![Contributors](https://img.shields.io/github/contributors/maurayonori/everything-claude-code?style=flat)](https://github.com/maurayonori/everything-claude-code/graphs/contributors)
 [![npm ecc-universal](https://img.shields.io/npm/dw/ecc-universal?label=ecc-universal%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/ecc-universal)
 [![npm ecc-agentshield](https://img.shields.io/npm/dw/ecc-agentshield?label=ecc-agentshield%20weekly%20downloads&logo=npm)](https://www.npmjs.com/package/ecc-agentshield)
 [![GitHub App Install](https://img.shields.io/badge/GitHub%20App-150%20installs-2ea44f?logo=github)](https://github.com/marketplace/ecc-tools)
@@ -112,7 +112,7 @@ Comece em menos de 2 minutos:
 
 ```bash
 # Adicionar marketplace
-/plugin marketplace add affaan-m/everything-claude-code
+/plugin marketplace add maurayonori/everything-claude-code
 
 # Instalar plugin
 /plugin install everything-claude-code@everything-claude-code
@@ -124,7 +124,7 @@ Comece em menos de 2 minutos:
 
 ```bash
 # Clone o repositório primeiro
-git clone https://github.com/affaan-m/everything-claude-code.git
+git clone https://github.com/maurayonori/everything-claude-code.git
 cd everything-claude-code
 
 # Instalar dependências (escolha seu gerenciador de pacotes)
@@ -301,7 +301,7 @@ claude --version
 
 ```bash
 # Adicionar este repositório como marketplace
-/plugin marketplace add affaan-m/everything-claude-code
+/plugin marketplace add maurayonori/everything-claude-code
 
 # Instalar o plugin
 /plugin install everything-claude-code@everything-claude-code
@@ -315,7 +315,7 @@ Ou adicione diretamente ao seu `~/.claude/settings.json`:
     "everything-claude-code": {
       "source": {
         "source": "github",
-        "repo": "affaan-m/everything-claude-code"
+        "repo": "maurayonori/everything-claude-code"
       }
     }
   },
@@ -329,7 +329,7 @@ Ou adicione diretamente ao seu `~/.claude/settings.json`:
 >
 > ```bash
 > # Clone o repositório primeiro
-> git clone https://github.com/affaan-m/everything-claude-code.git
+> git clone https://github.com/maurayonori/everything-claude-code.git
 >
 > # Opção A: Regras no nível do usuário (aplica a todos os projetos)
 > mkdir -p ~/.claude/rules
@@ -347,7 +347,7 @@ Ou adicione diretamente ao seu `~/.claude/settings.json`:
 
 ```bash
 # Clonar o repositório
-git clone https://github.com/affaan-m/everything-claude-code.git
+git clone https://github.com/maurayonori/everything-claude-code.git
 
 # Copiar agentes para sua config Claude
 cp everything-claude-code/agents/*.md ~/.claude/agents/
