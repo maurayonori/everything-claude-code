@@ -48,7 +48,7 @@ export const metadata = {
   name: "ecc-universal",
   version: VERSION,
   description: "Everything Claude Code plugin for OpenCode",
-  author: "affaan-m",
+  author: "maurayonori",
   features: {
     agents: 13,
     commands: 31,

@@ -325,21 +325,29 @@ Ou adicione diretamente ao seu `~/.claude/settings.json`:
 }
 ```
 
-> **Nota:** O sistema de plugins do Claude Code não suporta distribuição de `rules` via plugins. Você precisa instalar as regras manualmente:
+> **Nota:** O sistema de plugins do Claude Code não distribui `rules` via plugin. Instale manualmente.
+>
+> **Não “achate” com `cp rules/common/* ~/.claude/rules/`:** pacotes de linguagem repetem os mesmos nomes de arquivo (`testing.md`, etc.); usar `/*` em um único diretório **sobrescreve** regras e quebra links `../common/` nos Markdown. Mantenha **subpastas**: `~/.claude/rules/common/`, `~/.claude/rules/typescript/`, etc.
 >
 > ```bash
-> # Clone o repositório primeiro
 > git clone https://github.com/maurayonori/everything-claude-code.git
+> cd everything-claude-code
+> npm install   # ou pnpm | yarn | bun
 >
-> # Opção A: Regras no nível do usuário (aplica a todos os projetos)
-> mkdir -p ~/.claude/rules
-> cp -r everything-claude-code/rules/common/* ~/.claude/rules/
-> cp -r everything-claude-code/rules/typescript/* ~/.claude/rules/   # escolha sua stack
+> # Opção A (recomendado): usuário — script instala common + idiomas listados
+> ./install.sh typescript python golang
 >
-> # Opção B: Regras no nível do projeto (aplica apenas ao projeto atual)
-> mkdir -p .claude/rules
-> cp -r everything-claude-code/rules/common/* .claude/rules/
+> # Opção A (manual): copiar diretórios inteiros (sem `/*` no origem)
+> # mkdir -p ~/.claude/rules
+> # cp -R rules/common ~/.claude/rules/common
+> # cp -R rules/typescript ~/.claude/rules/typescript
+>
+> # Opção B: projeto (mesmo layout)
+> # mkdir -p .claude/rules
+> # cp -R rules/common .claude/rules/common
 > ```
+>
+> Detalhes: [rules/README.md](../../rules/README.md).
 
 ---
 
@@ -348,13 +356,13 @@ Ou adicione diretamente ao seu `~/.claude/settings.json`:
 ```bash
 # Clonar o repositório
 git clone https://github.com/maurayonori/everything-claude-code.git
+cd everything-claude-code
+npm install
+./install.sh typescript python golang
 
+cd ..
 # Copiar agentes para sua config Claude
 cp everything-claude-code/agents/*.md ~/.claude/agents/
-
-# Copiar regras (comuns + específicas da linguagem)
-cp -r everything-claude-code/rules/common/* ~/.claude/rules/
-cp -r everything-claude-code/rules/typescript/* ~/.claude/rules/
 
 # Copiar comandos
 cp everything-claude-code/commands/*.md ~/.claude/commands/

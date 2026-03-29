@@ -8,6 +8,7 @@ Common issues and solutions for Everything Claude Code (ECC) plugin.
 - [Agent Harness Failures](#agent-harness-failures)
 - [Hook & Workflow Errors](#hook--workflow-errors)
 - [Installation & Setup](#installation--setup)
+- [Plugin install: Claude Code app vs CLI](#plugin-install-claude-code-desktop-app-vs-cli)
 - [Performance Issues](#performance-issues)
 - [Common Error Messages](#common-error-messages)
 - [Getting Help](#getting-help)
@@ -237,6 +238,29 @@ tmux attach -t dev
 
 ## Installation & Setup
 
+### Plugin install: Claude Code desktop app vs CLI
+
+**Symptom:** In the **Claude Code desktop app**, after a successful `/plugin marketplace add`, `/plugin install everything-claude-code@everything-claude-code` fails with errors like:
+
+```text
+Invalid schema: plugins.2.source: Invalid input, plugins.5.source: Invalid input, ...
+```
+
+**Cause:** The app and the **`claude` CLI** do not always use the same marketplace / plugin catalog validation. Catalog entries whose `source` field is valid for the CLI can be rejected by the app’s stricter schema checks.
+
+**What to do (recommended):**
+
+1. Open a normal terminal (same machine, same Claude account).
+2. Run `claude` so you are in an interactive Claude Code **CLI** session.
+3. Run the same commands:
+   - `/plugin marketplace add maurayonori/everything-claude-code` (or your fork)
+   - `/plugin install everything-claude-code@everything-claude-code`
+4. Exit the CLI session and return to the **desktop app** — the plugin should be installed under `~/.claude/` and available there too.
+
+**If you mainly use the app for work:** treat **CLI as the supported path for marketplace install** for this plugin; daily coding can stay in the app.
+
+**Alternative:** Edit `~/.claude/settings.json` manually (`extraKnownMarketplaces` + `enabledPlugins`) as documented in the main README, avoiding `/plugin install` in the app entirely.
+
 ### Plugin Not Loading
 
 **Symptom:** Plugin features unavailable after install
@@ -355,6 +379,10 @@ du -sh ~/.claude/homunculus/*/
 ---
 
 ## Common Error Messages
+
+### "Invalid schema: plugins.*.source: Invalid input"
+
+See [Plugin install: Claude Code desktop app vs CLI](#plugin-install-claude-code-desktop-app-vs-cli) — use the **`claude` CLI** for `/plugin marketplace add` and `/plugin install`, or configure `~/.claude/settings.json` manually.
 
 ### "EACCES: permission denied"
 

@@ -216,15 +216,18 @@ Options:
   - "Go" — "Go patterns, table-driven tests, gofmt/staticcheck (5 files)"
 ```
 
-Execute installation:
-```bash
-# Common rules (flat copy into rules/)
-cp -r $ECC_ROOT/rules/common/* $TARGET/rules/
+Execute installation (keep **subdirectories** under `$TARGET/rules/` — do **not** use `/*` to flatten; same filenames across languages would overwrite each other and break `../common/` links in the Markdown):
 
-# Language-specific rules (flat copy into rules/)
-cp -r $ECC_ROOT/rules/typescript/* $TARGET/rules/   # if selected
-cp -r $ECC_ROOT/rules/python/* $TARGET/rules/        # if selected
-cp -r $ECC_ROOT/rules/golang/* $TARGET/rules/        # if selected
+```bash
+mkdir -p "$TARGET/rules"
+
+# Common rules (copy the directory, not contents-only)
+cp -R "$ECC_ROOT/rules/common" "$TARGET/rules/common"
+
+# Language-specific rules (one subdirectory per language, if selected)
+cp -R "$ECC_ROOT/rules/typescript" "$TARGET/rules/typescript"   # if selected
+cp -R "$ECC_ROOT/rules/python" "$TARGET/rules/python"         # if selected
+cp -R "$ECC_ROOT/rules/golang" "$TARGET/rules/golang"         # if selected
 ```
 
 **Important**: If the user selects any language-specific rules but NOT common rules, warn them:

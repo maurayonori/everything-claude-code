@@ -79,15 +79,14 @@
 > ⚠️ **重要提示：** Claude Code 插件无法自动分发 `rules`，需要手动安装：
 
 ```bash
-# 首先克隆仓库
 git clone https://github.com/maurayonori/everything-claude-code.git
+cd everything-claude-code
+npm install   # 或 pnpm install | yarn install | bun install
 
-# 复制规则（通用 + 语言特定）
-cp -r everything-claude-code/rules/common/* ~/.claude/rules/
-cp -r everything-claude-code/rules/typescript/* ~/.claude/rules/   # 选择你的技术栈
-cp -r everything-claude-code/rules/python/* ~/.claude/rules/
-cp -r everything-claude-code/rules/golang/* ~/.claude/rules/
-cp -r everything-claude-code/rules/perl/* ~/.claude/rules/
+# 推荐：common + 所需语言（~/.claude/rules 下保持 common、typescript 等子目录，勿用 /* 拍平）
+./install.sh typescript python golang perl
+
+# 详见仓库内 rules/README.md
 ```
 
 ### 第三步：开始使用
@@ -345,18 +344,15 @@ everything-claude-code/
 
 这让你可以立即访问所有命令、代理、技能和钩子。
 
-> **注意：** Claude Code 插件系统不支持通过插件分发 `rules`（[上游限制](https://code.claude.com/docs/en/plugins-reference)）。你需要手动安装规则：
+> **注意：** Claude Code 插件系统不支持通过插件分发 `rules`（[上游限制](https://code.claude.com/docs/en/plugins-reference)）。请手动安装规则。
+>
+> **不要将 `rules/` 整棵拍平到一层**（例如 `cp rules/* ~/.claude/rules/` 或对各子目录使用 `/*`）：同名 `.md` 会互相覆盖。请使用 **`./install.sh …`** 或**按子目录**复制到 `~/.claude/rules/common`、`~/.claude/rules/typescript` 等。详见 [rules/README.md](rules/README.md)。
 >
 > ```bash
-> # 首先克隆仓库
 > git clone https://github.com/maurayonori/everything-claude-code.git
->
-> # 选项 A：用户级规则（应用于所有项目）
-> cp -r everything-claude-code/rules/* ~/.claude/rules/
->
-> # 选项 B：项目级规则（仅应用于当前项目）
-> mkdir -p .claude/rules
-> cp -r everything-claude-code/rules/* .claude/rules/
+> cd everything-claude-code
+> npm install
+> ./install.sh typescript python golang   # 按需增删语言
 > ```
 
 ---
@@ -368,16 +364,13 @@ everything-claude-code/
 ```bash
 # 克隆仓库
 git clone https://github.com/maurayonori/everything-claude-code.git
+cd everything-claude-code
+npm install
+./install.sh typescript python golang perl
 
+cd ..
 # 将代理复制到你的 Claude 配置
 cp everything-claude-code/agents/*.md ~/.claude/agents/
-
-# 复制规则（通用 + 语言特定）
-cp -r everything-claude-code/rules/common/* ~/.claude/rules/
-cp -r everything-claude-code/rules/typescript/* ~/.claude/rules/   # 选择你的技术栈
-cp -r everything-claude-code/rules/python/* ~/.claude/rules/
-cp -r everything-claude-code/rules/golang/* ~/.claude/rules/
-cp -r everything-claude-code/rules/perl/* ~/.claude/rules/
 
 # 复制命令
 cp everything-claude-code/commands/*.md ~/.claude/commands/
@@ -388,7 +381,7 @@ cp -r everything-claude-code/skills/* ~/.claude/skills/
 
 #### 将钩子添加到 settings.json
 
-将 `hooks/hooks.json` 中的钩子复制到你的 `~/.claude/settings.json`。
+**钩子：** 若以**插件**安装 ECC，`hooks/hooks.json` 会**自动加载**，**勿**再复制到 `~/.claude/settings.json`。仅**手动安装**时合并 **`"hooks": { ... }`**；注意 **`${CLAUDE_PLUGIN_ROOT}`** 需指向本仓库绝对路径。
 
 #### 配置 MCP
 

@@ -113,22 +113,26 @@
 /plugin install everything-claude-code@everything-claude-code
 ```
 
+> **Claude Code アプリ vs CLI:** **デスクトップアプリ**（Pro / ビジネス利用でメインになりがちな環境）だけだと、`/plugin install` が **`Invalid schema: plugins.*.source: Invalid input`** のように失敗することがあります。同じ **`/plugin marketplace add`** と **`/plugin install`** を、**ターミナルで `claude` CLI を起動したセッション**から実行すると通ることが多いです。アプリ側のプラグインスキーマ検証が、マーケットプレイスカタログの `source` 表現を CLI より厳しく弾くためです。**マーケットの追加とプラグインインストールは CLI で一度行う**と確実で、設定は共有されるので、その後はいつもどおりアプリで作業できます。詳細は [TROUBLESHOOTING.md](../../TROUBLESHOOTING.md#plugin-install-claude-code-desktop-app-vs-cli)（英語）を参照。
+
 ### ステップ2：ルールをインストール（必須）
 
 > ⚠️ **重要:** Claude Codeプラグインは`rules`を自動配布できません。手動でインストールしてください：
 
 ```bash
-# まずリポジトリをクローン
+# リポジトリをクローンして依存関係を入れる
 git clone https://github.com/maurayonori/everything-claude-code.git
+cd everything-claude-code
+npm install   # または pnpm install / yarn install / bun install
 
-# 共通ルールをインストール（必須）
-cp -r everything-claude-code/rules/common/* ~/.claude/rules/
+# 推奨: common + 使う言語をまとめてユーザールールへ（~/.claude/rules/{common,typescript,...}）
+./install.sh typescript python golang
+# 他: swift php java kotlin rust cpp csharp perl など rules/ 直下にある名前
 
-# 言語固有ルールをインストール（スタックを選択）
-cp -r everything-claude-code/rules/typescript/* ~/.claude/rules/
-cp -r everything-claude-code/rules/python/* ~/.claude/rules/
-cp -r everything-claude-code/rules/golang/* ~/.claude/rules/
+# 手動で置く場合は「フォルダごと」コピーすること（後述の注記を読む）
 ```
+
+詳細はリポジトリ内 [rules/README.md](../../rules/README.md) を参照。
 
 ### ステップ3：使用開始
 
@@ -430,6 +434,8 @@ Duplicate hooks file detected: ./hooks/hooks.json resolves to already-loaded fil
 /plugin install everything-claude-code@everything-claude-code
 ```
 
+> **アプリ利用者向け:** マーケットプレイス経由の `/plugin install` が **Claude Code アプリ**では `Invalid schema` / `plugins.*.source: Invalid input` になり、**`claude` CLI** では成功する、という差が出ることがあります。まず CLI でインストールし、その後はアプリを使い続けて問題ありません。くわしくは [TROUBLESHOOTING.md](../../TROUBLESHOOTING.md#plugin-install-claude-code-desktop-app-vs-cli)。
+
 または、`~/.claude/settings.json` に直接追加：
 
 ```json
@@ -450,24 +456,31 @@ Duplicate hooks file detected: ./hooks/hooks.json resolves to already-loaded fil
 
 これで、すべてのコマンド、エージェント、スキル、フックにすぐにアクセスできます。
 
-> **注:** Claude Codeプラグインシステムは`rules`をプラグイン経由で配布できません（[アップストリーム制限](https://code.claude.com/docs/en/plugins-reference)）。ルールは手動でインストールする必要があります：
+> **注:** Claude Codeプラグインシステムは`rules`をプラグイン経由で配布できません（[アップストリーム制限](https://code.claude.com/docs/en/plugins-reference)）。ルールは手動でインストールします。
+>
+> **`cp rules/common/* ~/.claude/rules/` のようにフラットにまとめないでください。** `common` と各言語ディレクトリには同名の `.md`（例: `testing.md`）があり、`/*` で1段にすると**後からコピーした言語が前を上書き**し、相対パス `../common/` も壊れます。複数言語を使うときも **`~/.claude/rules/common`、`~/.claude/rules/typescript` のようにサブディレクトリのまま**置きます。
 >
 > ```bash
-> # まずリポジトリをクローン
 > git clone https://github.com/maurayonori/everything-claude-code.git
+> cd everything-claude-code
+> npm install   # または pnpm install / yarn install / bun install
 >
-> # オプション A：ユーザーレベルルール（すべてのプロジェクトに適用）
-> mkdir -p ~/.claude/rules
-> cp -r everything-claude-code/rules/common/* ~/.claude/rules/
-> cp -r everything-claude-code/rules/typescript/* ~/.claude/rules/   # スタックを選択
-> cp -r everything-claude-code/rules/python/* ~/.claude/rules/
-> cp -r everything-claude-code/rules/golang/* ~/.claude/rules/
+> # オプション A（推奨）: ユーザーレベル — スクリプトで common + 言語を一括
+> ./install.sh typescript python golang   # 使う言語だけ列挙
 >
-> # オプション B：プロジェクトレベルルール（現在のプロジェクトのみ）
-> mkdir -p .claude/rules
-> cp -r everything-claude-code/rules/common/* .claude/rules/
-> cp -r everything-claude-code/rules/typescript/* .claude/rules/     # スタックを選択
+> # オプション A（手動）: ディレクトリごとコピー（ソース側に /* を付けない）
+> # mkdir -p ~/.claude/rules
+> # cp -R rules/common ~/.claude/rules/common
+> # cp -R rules/typescript ~/.claude/rules/typescript
+> # cp -R rules/python ~/.claude/rules/python
+>
+> # オプション B: プロジェクト直下（同じくサブディレクトリ構成）
+> # mkdir -p .claude/rules
+> # cp -R rules/common .claude/rules/common
+> # cp -R rules/typescript .claude/rules/typescript
 > ```
+>
+> くわしくは [rules/README.md](../../rules/README.md)。
 
 ---
 
@@ -478,15 +491,15 @@ Duplicate hooks file detected: ./hooks/hooks.json resolves to already-loaded fil
 ```bash
 # リポジトリをクローン
 git clone https://github.com/maurayonori/everything-claude-code.git
+cd everything-claude-code
+npm install   # または pnpm install / yarn install / bun install
 
+# ルール（フラット化しない — install.sh 推奨）
+./install.sh typescript python golang
+
+cd ..
 # エージェントを Claude 設定にコピー
 cp everything-claude-code/agents/*.md ~/.claude/agents/
-
-# ルール（共通 + 言語固有）をコピー
-cp -r everything-claude-code/rules/common/* ~/.claude/rules/
-cp -r everything-claude-code/rules/typescript/* ~/.claude/rules/   # スタックを選択
-cp -r everything-claude-code/rules/python/* ~/.claude/rules/
-cp -r everything-claude-code/rules/golang/* ~/.claude/rules/
 
 # コマンドをコピー
 cp everything-claude-code/commands/*.md ~/.claude/commands/
@@ -495,9 +508,11 @@ cp everything-claude-code/commands/*.md ~/.claude/commands/
 cp -r everything-claude-code/skills/* ~/.claude/skills/
 ```
 
-#### settings.json にフックを追加
+#### フック（hooks）
 
-`hooks/hooks.json` のフックを `~/.claude/settings.json` にコピーします。
+- **ECC をプラグインとして入れている場合（`/plugin install` など）:** `hooks/hooks.json` は **プラグインから自動読み込み**されます。**`~/.claude/settings.json` に同じフックをコピーしないでください**（「Duplicate hooks file detected」などの重複になります）。
+- **手動インストールだけでプラグインを使わない場合:** `hooks/hooks.json` の **トップレベルの `"hooks": { ... }` オブジェクトだけ**を `~/.claude/settings.json` にマージします（ファイル全体を上書きしない。既存の `permissions` など他キーは残す）。`$schema` 行は通常は不要です。
+- このリポジトリのフックは多くのコマンドが **`${CLAUDE_PLUGIN_ROOT}`** を参照します。手動運用では、環境変数 `CLAUDE_PLUGIN_ROOT` に **このリポジトリの絶対パス**を設定するか、該当 `command` 文字列内のパスを実パスに書き換えてください。
 
 #### MCP を設定
 

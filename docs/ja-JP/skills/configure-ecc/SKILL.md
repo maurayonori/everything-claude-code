@@ -152,15 +152,15 @@ Options:
   - "Go" — "Go パターン、テーブル駆動テスト、gofmt/staticcheck（5ファイル）"
 ```
 
-インストールを実行：
-```bash
-# 共通ルール（rules/ にフラットコピー）
-cp -r $ECC_ROOT/rules/common/* $TARGET/rules/
+インストールを実行（`$TARGET/rules/` 直下に **`common/`・`typescript/` などサブディレクトリを維持**する。`/*` でフラットにすると同名 `.md` が上書きされ、`../common/` リンクも壊れる）：
 
-# 言語固有のルール（rules/ にフラットコピー）
-cp -r $ECC_ROOT/rules/typescript/* $TARGET/rules/   # 選択された場合
-cp -r $ECC_ROOT/rules/python/* $TARGET/rules/        # 選択された場合
-cp -r $ECC_ROOT/rules/golang/* $TARGET/rules/        # 選択された場合
+```bash
+mkdir -p "$TARGET/rules"
+
+cp -R "$ECC_ROOT/rules/common" "$TARGET/rules/common"
+cp -R "$ECC_ROOT/rules/typescript" "$TARGET/rules/typescript"   # 選択された場合
+cp -R "$ECC_ROOT/rules/python" "$TARGET/rules/python"         # 選択された場合
+cp -R "$ECC_ROOT/rules/golang" "$TARGET/rules/golang"         # 選択された場合
 ```
 
 **重要**: ユーザーが言語固有のルールを選択したが、共通ルールを選択しなかった場合、警告します：

@@ -78,11 +78,14 @@
 > ⚠️ **重要提示：** Claude Code 外掛程式無法自動分發 `rules`，需要手動安裝：
 
 ```bash
-# 首先複製儲存庫
 git clone https://github.com/maurayonori/everything-claude-code.git
+cd everything-claude-code
+npm install   # 或 pnpm / yarn / bun
 
-# 複製規則（應用於所有專案）
-cp -r everything-claude-code/rules/* ~/.claude/rules/
+# 建議：保持 ~/.claude/rules/{common,typescript,...} 子目錄，勿用 rules/* 或 /* 拍平（同名 .md 會互蓋）
+./install.sh typescript python golang
+
+# 詳見倉庫內 rules/README.md
 ```
 
 ### 第三步：開始使用
@@ -302,12 +305,13 @@ everything-claude-code/
 ```bash
 # 複製儲存庫
 git clone https://github.com/maurayonori/everything-claude-code.git
+cd everything-claude-code
+npm install
+./install.sh typescript python golang
 
+cd ..
 # 將代理程式複製到您的 Claude 設定
 cp everything-claude-code/agents/*.md ~/.claude/agents/
-
-# 複製規則
-cp everything-claude-code/rules/*.md ~/.claude/rules/
 
 # 複製指令
 cp everything-claude-code/commands/*.md ~/.claude/commands/
@@ -318,7 +322,7 @@ cp -r everything-claude-code/skills/* ~/.claude/skills/
 
 #### 將鉤子新增到 settings.json
 
-將 `hooks/hooks.json` 中的鉤子複製到您的 `~/.claude/settings.json`。
+**鉤子：** 若以**外掛**安裝 ECC，`hooks/hooks.json` 會**自動載入**，**勿**再複製到 `~/.claude/settings.json`。僅**手動安裝**時才合併 **`"hooks": { ... }`**；命令中的 **`${CLAUDE_PLUGIN_ROOT}`** 請設為本儲存庫絕對路徑。
 
 #### 設定 MCP
 

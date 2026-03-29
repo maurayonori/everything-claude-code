@@ -221,16 +221,15 @@ cp -r $ECC_ROOT/skills/<skill-name> $TARGET/skills/
   - "Go" — "Go模式、表驱动测试、gofmt/staticcheck（5个文件）"
 ```
 
-执行安装：
+执行安装（在 `$TARGET/rules/` 下保持 **`common/`、`typescript/` 等子目录**，不要用 `/*` 拍平；否则同名 `.md` 会互相覆盖并破坏 Markdown 中的 `../common/` 链接）：
 
 ```bash
-# Common rules (flat copy into rules/)
-cp -r $ECC_ROOT/rules/common/* $TARGET/rules/
+mkdir -p "$TARGET/rules"
 
-# Language-specific rules (flat copy into rules/)
-cp -r $ECC_ROOT/rules/typescript/* $TARGET/rules/   # if selected
-cp -r $ECC_ROOT/rules/python/* $TARGET/rules/        # if selected
-cp -r $ECC_ROOT/rules/golang/* $TARGET/rules/        # if selected
+cp -R "$ECC_ROOT/rules/common" "$TARGET/rules/common"
+cp -R "$ECC_ROOT/rules/typescript" "$TARGET/rules/typescript"   # 若已选
+cp -R "$ECC_ROOT/rules/python" "$TARGET/rules/python"         # 若已选
+cp -R "$ECC_ROOT/rules/golang" "$TARGET/rules/golang"         # 若已选
 ```
 
 **重要**：如果用户选择了任何特定语言的规则但**没有**选择通用规则，警告他们：

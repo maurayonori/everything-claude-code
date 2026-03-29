@@ -380,8 +380,9 @@ Evet. Seçenek 2'yi (manuel kurulum) kullanın ve yalnızca ihtiyacınız olanı
 # Sadece agent'lar
 cp everything-claude-code/agents/*.md ~/.claude/agents/
 
-# Sadece rule'lar
-cp -r everything-claude-code/rules/common/* ~/.claude/rules/
+# Sadece rule'lar (düzleştirme yok — alt klasörleri koruyun)
+cd everything-claude-code && npm install && ./install.sh typescript && cd ..
+# veya: cp -R everything-claude-code/rules/common ~/.claude/rules/common
 ```
 
 Her component tamamen bağımsızdır.

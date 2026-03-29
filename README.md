@@ -167,6 +167,8 @@ Get up and running in under 2 minutes:
 /plugin install everything-claude-code@everything-claude-code
 ```
 
+> **Claude Code app vs CLI:** If you primarily use the **desktop app** (common for Pro / business) and `/plugin install` fails with **`Invalid schema: plugins.*.source: Invalid input`**, run the **same** `/plugin marketplace add` and `/plugin install` commands from a **terminal session using the `claude` CLI**. The app’s plugin validator can reject marketplace catalog `source` entries that the CLI accepts. **Use the CLI once to add the marketplace and install the plugin**; your settings apply to both, so you can keep working in the app afterward. See [Troubleshooting → Installation & Setup](TROUBLESHOOTING.md#plugin-install-claude-code-desktop-app-vs-cli).
+
 ### Step 2: Install Rules (Required)
 
 > ⚠️ **Important:** Claude Code plugins cannot distribute `rules` automatically. Install them manually:
@@ -586,6 +588,8 @@ The easiest way to use this repo - install as a Claude Code plugin:
 /plugin install everything-claude-code@everything-claude-code
 ```
 
+> **Desktop app users:** Marketplace-driven `/plugin install` may fail in the **Claude Code app** with `Invalid schema` / `plugins.*.source: Invalid input` while the **`claude` CLI** succeeds. Install via CLI first, then use the app as usual. Details: [TROUBLESHOOTING.md](TROUBLESHOOTING.md#plugin-install-claude-code-desktop-app-vs-cli).
+
 Or add directly to your `~/.claude/settings.json`:
 
 ```json
@@ -606,25 +610,30 @@ Or add directly to your `~/.claude/settings.json`:
 
 This gives you instant access to all commands, agents, skills, and hooks.
 
-> **Note:** The Claude Code plugin system does not support distributing `rules` via plugins ([upstream limitation](https://code.claude.com/docs/en/plugins-reference)). You need to install rules manually:
+> **Note:** The Claude Code plugin system does not support distributing `rules` via plugins ([upstream limitation](https://code.claude.com/docs/en/plugins-reference)). Install rules manually.
+>
+> **Do not flatten** with `cp rules/common/* ~/.claude/rules/`. Language packs reuse the same filenames (`testing.md`, `security.md`, …), so copying with `/*` into one folder **overwrites** earlier files and breaks the `../common/` links inside those Markdown files. Use **separate subdirectories**: `~/.claude/rules/common/`, `~/.claude/rules/typescript/`, etc. (multiple languages side by side is fine).
 >
 > ```bash
-> # Clone the repo first
 > git clone https://github.com/maurayonori/everything-claude-code.git
+> cd everything-claude-code
+> npm install   # or pnpm install | yarn install | bun install
 >
-> # Option A: User-level rules (applies to all projects)
-> mkdir -p ~/.claude/rules
-> cp -r everything-claude-code/rules/common/* ~/.claude/rules/
-> cp -r everything-claude-code/rules/typescript/* ~/.claude/rules/   # pick your stack
-> cp -r everything-claude-code/rules/python/* ~/.claude/rules/
-> cp -r everything-claude-code/rules/golang/* ~/.claude/rules/
-> cp -r everything-claude-code/rules/php/* ~/.claude/rules/
+> # Option A (recommended): user-level — script installs common + listed languages
+> ./install.sh typescript python golang php   # trim the list to what you use
 >
-> # Option B: Project-level rules (applies to current project only)
-> mkdir -p .claude/rules
-> cp -r everything-claude-code/rules/common/* .claude/rules/
-> cp -r everything-claude-code/rules/typescript/* .claude/rules/     # pick your stack
+> # Option A (manual): copy whole directories (no `/*` on the source dir)
+> # mkdir -p ~/.claude/rules
+> # cp -R rules/common ~/.claude/rules/common
+> # cp -R rules/typescript ~/.claude/rules/typescript
+>
+> # Option B: project-level (same layout under the repo)
+> # mkdir -p .claude/rules
+> # cp -R rules/common .claude/rules/common
+> # cp -R rules/typescript .claude/rules/typescript
 > ```
+>
+> Full detail: [rules/README.md](rules/README.md).
 
 ---
 
@@ -635,16 +644,15 @@ If you prefer manual control over what's installed:
 ```bash
 # Clone the repo
 git clone https://github.com/maurayonori/everything-claude-code.git
+cd everything-claude-code
+npm install   # or pnpm install | yarn install | bun install
 
+# Rules: do not flatten — use install.sh (see rules/README.md)
+./install.sh typescript python golang php
+
+cd ..
 # Copy agents to your Claude config
 cp everything-claude-code/agents/*.md ~/.claude/agents/
-
-# Copy rules (common + language-specific)
-cp -r everything-claude-code/rules/common/* ~/.claude/rules/
-cp -r everything-claude-code/rules/typescript/* ~/.claude/rules/   # pick your stack
-cp -r everything-claude-code/rules/python/* ~/.claude/rules/
-cp -r everything-claude-code/rules/golang/* ~/.claude/rules/
-cp -r everything-claude-code/rules/php/* ~/.claude/rules/
 
 # Copy commands
 cp everything-claude-code/commands/*.md ~/.claude/commands/
@@ -660,9 +668,11 @@ cp -r everything-claude-code/skills/search-first ~/.claude/skills/
 # done
 ```
 
-#### Add hooks to settings.json
+#### Hooks
 
-Copy the hooks from `hooks/hooks.json` to your `~/.claude/settings.json`.
+- **If ECC is installed as a plugin** (`/plugin install`, etc.): `hooks/hooks.json` is **loaded automatically from the plugin**. **Do not copy the same hooks into `~/.claude/settings.json`** — that triggers duplicate-hook detection (e.g. `Duplicate hooks file detected`).
+- **Manual install only (no plugin):** merge the top-level **`"hooks": { ... }`** object from `hooks/hooks.json` into `~/.claude/settings.json` (do not replace the whole file; keep other keys). You usually omit the `$schema` field from `hooks.json`.
+- Hook commands often use **`${CLAUDE_PLUGIN_ROOT}`**. For manual use, set `CLAUDE_PLUGIN_ROOT` to the **absolute path of this repo**, or rewrite those command strings to use real paths.
 
 #### Configure MCPs
 
@@ -849,8 +859,9 @@ Yes. Use Option 2 (manual installation) and copy only what you need:
 # Just agents
 cp everything-claude-code/agents/*.md ~/.claude/agents/
 
-# Just rules
-cp -r everything-claude-code/rules/common/* ~/.claude/rules/
+# Just rules (keep subdirs — do not use /* flattening)
+cd everything-claude-code && npm install && ./install.sh typescript && cd ..
+# or: cp -R everything-claude-code/rules/common ~/.claude/rules/common
 ```
 
 Each component is fully independent.
